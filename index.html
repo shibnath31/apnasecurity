@@ -4,14 +4,732 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apna Security - Learn Cybersecurity</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2a4b8d;
+            --secondary: #ff6b35;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) rotateX(10deg);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-3px) rotateX(10deg);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* 3D Transformations */
+        .scene {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transform: translateZ(20px);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+            border-radius: 50%;
+            transform: rotateY(15deg);
+            transition: transform 0.5s ease;
+        }
+
+        .logo:hover img {
+            transform: rotateY(-15deg);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transform: translateZ(10px);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+            transform: translateZ(10px);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%232a4b8d" points="0,0 1000,500 0,1000" opacity="0.1"/></svg>');
+            transform: translateZ(-100px) scale(2);
+        }
+
+        .hero .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transform-style: preserve-3d;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 50px;
+            transform: translateZ(30px);
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transform: translateZ(20px);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            transform: translateZ(15px);
+        }
+
+        .hero-image {
+            flex: 1;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: rotateY(-15deg) rotateX(5deg);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: rotateY(0) rotateX(0);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateY(-5deg); }
+            50% { transform: translateY(-20px) rotateY(5deg); }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: var(--dark);
+            transform-style: preserve-3d;
+        }
+
+        .features .container {
+            display: flex;
+            justify-content: space-between;
+            transform-style: preserve-3d;
+        }
+
+        .feature-box {
+            flex: 1;
+            margin: 0 20px;
+            padding: 40px 30px;
+            background: rgba(42, 75, 141, 0.1);
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(42, 75, 141, 0.2);
+        }
+
+        .feature-box i {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            transform: translateZ(20px);
+        }
+
+        .feature-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            transform: translateZ(15px);
+        }
+
+        .feature-box p {
+            color: var(--gray);
+            line-height: 1.6;
+            transform: translateZ(10px);
+        }
+
+        /* Courses Section */
+        .courses {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #16213e 0%, var(--dark) 100%);
+            transform-style: preserve-3d;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+            transform-style: preserve-3d;
+        }
+
+        .course-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .course-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transform: translateZ(10px);
+        }
+
+        .course-info {
+            padding: 25px;
+            transform-style: preserve-3d;
+        }
+
+        .course-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            transform: translateZ(15px);
+        }
+
+        .course-info p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.5;
+            transform: translateZ(10px);
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            transform: translateZ(5px);
+        }
+
+        .course-meta span {
+            display: flex;
+            align-items: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .course-meta i {
+            margin-right: 5px;
+            color: var(--secondary);
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background: var(--dark);
+            transform-style: preserve-3d;
+        }
+
+        .about .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transform-style: preserve-3d;
+        }
+
+        .about-image {
+            flex: 1;
+            margin-right: 50px;
+            transform-style: preserve-3d;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: rotateY(15deg) rotateX(5deg);
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: rotateY(0) rotateX(0);
+        }
+
+        .about-content {
+            flex: 1;
+            transform-style: preserve-3d;
+        }
+
+        .about-content p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            transform: translateZ(10px);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            transform-style: preserve-3d;
+        }
+
+        .stat-item {
+            text-align: center;
+            transform-style: preserve-3d;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            transform: translateZ(15px);
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            transform: translateZ(10px);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #16213e 0%, var(--dark) 100%);
+            transform-style: preserve-3d;
+        }
+
+        .contact-container {
+            display: flex;
+            transform-style: preserve-3d;
+        }
+
+        .contact-info {
+            flex: 1;
+            padding-right: 50px;
+            transform-style: preserve-3d;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            transform: translateZ(15px);
+        }
+
+        .contact-info p {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            transform: translateZ(10px);
+        }
+
+        .contact-info ul {
+            list-style: none;
+            margin-bottom: 30px;
+            transform-style: preserve-3d;
+        }
+
+        .contact-info ul li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            transform: translateZ(10px);
+        }
+
+        .contact-info ul li i {
+            margin-right: 15px;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            transform-style: preserve-3d;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-5px) rotateY(10deg);
+        }
+
+        .contact-form {
+            flex: 1;
+            transform-style: preserve-3d;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            transform-style: preserve-3d;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            transform: translateZ(10px);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-control:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary);
+            transform: translateZ(5px);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 70px 0 0;
+            transform-style: preserve-3d;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            transform-style: preserve-3d;
+        }
+
+        .footer-col {
+            flex: 1;
+            margin-right: 30px;
+            transform-style: preserve-3d;
+        }
+
+        .footer-col:last-child {
+            margin-right: 0;
+        }
+
+        .footer-col h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            transform: translateZ(15px);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            transform-style: preserve-3d;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+            transform: translateZ(10px);
+        }
+
+        .footer-col ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* 3D Parallax Effect */
+        .parallax {
+            transform-style: preserve-3d;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero .container,
+            .about .container,
+            .contact-container {
+                flex-direction: column;
+            }
+            
+            .hero-content,
+            .about-content,
+            .contact-info {
+                padding-right: 0;
+                margin-bottom: 50px;
+            }
+            
+            .features .container {
+                flex-direction: column;
+            }
+            
+            .feature-box {
+                margin: 0 0 30px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-col {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero-content h2 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                margin-bottom: 20px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                margin-top: 15px;
+            }
+            
+            .footer-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="container">
             <div class="logo">
-                <img src="apnasecurity.jpg" alt="Apna Security Logo">
+                <div class="logo-placeholder" style="width: 50px; height: 50px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AS</div>
                 <h1>Apna Security</h1>
             </div>
             <nav>
@@ -20,7 +738,6 @@
                     <li><a href="#courses">Courses</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    
                 </ul>
             </nav>
             <div class="mobile-menu">
@@ -34,10 +751,12 @@
             <div class="hero-content">
                 <h2>Learning Cyber Security with Apna Security</h2>
                 <p>Learn from industry experts and protect the digital world from threats and vulnerabilities.</p>
-                <a href="#courses" class="btn btn-primary">Explore  Courses</a>
+                <a href="#courses" class="btn btn-primary">Explore Courses</a>
             </div>
             <div class="hero-image">
-                <img src="apna2.jpg" al="Cybersecurity Illustration">
+                <div class="image-placeholder" style="width: 100%; height: 400px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; text-align: center;">
+                    <div>Cybersecurity<br>Visualization</div>
+                </div>
             </div>
         </div>
     </section>
@@ -67,7 +786,9 @@
             <h2 class="section-title">Our Popular Courses</h2>
             <div class="course-grid">
                 <div class="course-card">
-                    <img src="apna.jpg" alt="Ethical Hacking">
+                    <div class="image-placeholder" style="width: 100%; height: 200px; background: linear-gradient(45deg, #2a4b8d, #3a5b9d); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        Ethical Hacking
+                    </div>
                     <div class="course-info">
                         <h3>Ethical Hacking Fundamentals</h3>
                         <p>Learn to think like a hacker to defend systems effectively.</p>
@@ -79,7 +800,9 @@
                     </div>
                 </div>
                 <div class="course-card">
-                    <img src="apna3.jpg" alt="Network Security">
+                    <div class="image-placeholder" style="width: 100%; height: 200px; background: linear-gradient(45deg, #ff6b35, #ff7b45); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        Network Security
+                    </div>
                     <div class="course-info">
                         <h3>Network Basics</h3>
                         <p>Secure networks from intrusions and unauthorized access.</p>
@@ -91,7 +814,9 @@
                     </div>
                 </div>
                 <div class="course-card">
-                    <img src="image.png" alt="Python">
+                    <div class="image-placeholder" style="width: 100%; height: 200px; background: linear-gradient(45deg, #2a4b8d, #3a5b9d); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        Python Programming
+                    </div>
                     <div class="course-info">
                         <h3>Python</h3>
                         <p>Python is one of the top programming languages in the world, widely used in fields such as AI, machine learning, data science, and web development.</p>
@@ -103,7 +828,9 @@
                     </div>
                 </div>
                  <div class="course-card">
-                    <img src="kali.png" alt="Kali Linux">
+                    <div class="image-placeholder" style="width: 100%; height: 200px; background: linear-gradient(45deg, #ff6b35, #ff7b45); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        Kali Linux
+                    </div>
                     <div class="course-info">
                         <h3>Kali Linux</h3>
                         <p>Kali Linux is a Debian-based Linux distribution primarily used for penetration testing and cybersecurity auditing.</p>
@@ -115,7 +842,9 @@
                     </div>
                 </div>
                 <div class="course-card">
-                    <img src="machin.png" alt="Machine Learning">
+                    <div class="image-placeholder" style="width: 100%; height: 200px; background: linear-gradient(45deg, #2a4b8d, #3a5b9d); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        Machine Learning
+                    </div>
                     <div class="course-info">
                         <h3>Machine Learning</h3>
                         <p>Machine learning is a branch of Artificial Intelligence that focuses on developing models and algorithms that let computers learn from data without being explicitly programmed for every task.</p>
@@ -136,7 +865,9 @@
     <section class="about" id="about">
         <div class="container">
             <div class="about-image">
-                <img src="apnasecurity.jpg" alt="About Apna Security">
+                <div class="image-placeholder" style="width: 100%; height: 400px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; text-align: center;">
+                    About Apna Security
+                </div>
             </div>
             <div class="about-content">
                 <h2 class="section-title">Apna Security</h2>
@@ -170,7 +901,7 @@
                     <ul>
                         <li><i class="fas fa-envelope"></i> apna2528@gmail.com</li>
                         <li><i class="fas fa-phone"></i> +91 8101062528</li>
-                        <li><i class="fas fa-map-marker-alt"></i>  Medinipur, India</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Medinipur, India</li>
                     </ul>
                     <div class="social-links">
                         <a href="https://github.com/shibnath31"><i class="fab fa-github"></i></a>
@@ -178,54 +909,40 @@
                          <a href="https://www.linkedin.com/in/shibnath-rana-77323b2a9?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin"></i></a>
                         <a href="https://www.instagram.com/shibnath_rana_?igsh=MWZsd2h3YXl5eG5ocA=="><i class="fab fa-instagram"></i></a>
                     </div>
-              
                 </div>
-    <form class="contact-form">
-        <div class="form-group">
-            <label for="name">Your Name</label>
-            <input type="text" id="name" class="form-control" required>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" class="form-control" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="button" onclick="sendEmail()" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
         </div>
-        
-        <div class="form-group">
-            <label for="email">Your Email</label>
-            <input type="email" id="email" class="form-control" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" class="form-control" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="message">Your Message</label>
-            <textarea id="message" class="form-control" rows="5" required></textarea>
-        </div>
-        
-        <button type="button" onclick="sendEmail()" class="btn btn-primary">Send Message</button>
-    </form>
+    </section>
 
-    <script>
-        function sendEmail() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const subject = document.getElementById("subject").value;
-            const message = document.getElementById("message").value;
-            
-            // Replace 'your-email@example.com' with your actual email
-            const mailtoLink = `mailto:apna2528@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-                `Name: ${name}\nEmail: ${email}\n\nMessage: ${message}`
-            )}`;
-            
-            window.location.href = mailtoLink;
-        }
-    </script>
-</form>
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-col">
                     <div class="logo">
-                        <img src="apnasecurity.jpg" alt="Apna Security Logo">
+                        <div class="logo-placeholder" style="width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin-right: 10px;">AS</div>
                         <h3>Apna Security</h3>
                     </div>
                     <p>Empowering individuals with cybersecurity knowledge to create a safer digital world.</p>
@@ -243,12 +960,11 @@
                     <h4>Courses</h4>
                     <ul>
                         <li><a href="#">Ethical Hacking</a></li>
-                        <li><a href="#">Network Basics </a></li>
+                        <li><a href="#">Network Basics</a></li>
                         <li><a href="#">Python</a></li>
                         <li><a href="#">Kali Linux</a></li>
                     </ul>
                 </div>
-                
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Apna Security. All Rights Reserved.</p>
@@ -260,6 +976,69 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        function sendEmail() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const subject = document.getElementById("subject").value;
+            const message = document.getElementById("message").value;
+            
+            const mailtoLink = `mailto:apna2528@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+                `Name: ${name}\nEmail: ${email}\n\nMessage: ${message}`
+            )}`;
+            
+            window.location.href = mailtoLink;
+        }
+
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('nav ul').classList.toggle('active');
+        });
+
+        // 3D Parallax effect on scroll
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax');
+            
+            parallaxElements.forEach(function(el) {
+                const speed = el.getAttribute('data-speed') || 0.5;
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Add subtle 3D effect on mouse move
+        document.addEventListener('mousemove', function(e) {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            
+            const heroImage = document.querySelector('.hero-image');
+            if(heroImage) {
+                heroImage.style.transform = `translateY(-20px) rotateY(${moveX}deg) rotateX(${-moveY}deg)`;
+            }
+        });
+
+        // Add animation to feature boxes on scroll
+        const featureBoxes = document.querySelectorAll('.feature-box');
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) rotateX(0)';
+                }
+            });
+        }, observerOptions);
+
+        featureBoxes.forEach(box => {
+            box.style.opacity = '0';
+            box.style.transform = 'translateY(20px) rotateX(10deg)';
+            box.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(box);
+        });
+    </script>
 </body>
 </html>
